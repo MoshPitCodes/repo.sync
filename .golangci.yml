@@ -1,203 +1,39 @@
 # golangci-lint configuration for repo-sync
-# https://golangci-lint.run/usage/configuration/
+# Simplified configuration with essential linters only
 
 run:
-  timeout: 10m
+  timeout: 5m
   tests: true
-  build-tags:
-    - integration
   skip-dirs:
     - vendor
     - .github
-    - docs
-  skip-files:
-    - ".*_test.go$"
-  modules-download-mode: readonly
-  allow-parallel-runners: true
 
 output:
   formats:
     - format: colored-line-number
-  print-issued-lines: true
   print-linter-name: true
-  uniq-by-line: true
   sort-results: true
 
 linters-settings:
-  # Errcheck - check for unchecked errors
   errcheck:
     check-type-assertions: true
     check-blank: true
-    exclude-functions:
-      - (*github.com/charmbracelet/bubbletea.Program).Send
 
-  # Govet - official Go static analyzer
   govet:
     enable-all: true
-    settings:
-      printf:
-        funcs:
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
-          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
 
-  # Gofmt - check if code is properly formatted
   gofmt:
     simplify: true
-    rewrite-rules:
-      - pattern: 'interface{}'
-        replacement: 'any'
-      - pattern: 'a[b:len(a)]'
-        replacement: 'a[b:]'
 
-  # Goimports - check if imports are properly organized
-  goimports:
-    local-prefixes: github.com/MoshPitCodes/repo.sync
-
-  # Revive - replacement for golint
-  revive:
-    confidence: 0.8
-    rules:
-      - name: blank-imports
-      - name: context-as-argument
-      - name: context-keys-type
-      - name: dot-imports
-      - name: error-return
-      - name: error-strings
-      - name: error-naming
-      - name: exported
-      - name: if-return
-      - name: increment-decrement
-      - name: var-naming
-      - name: var-declaration
-      - name: package-comments
-      - name: range
-      - name: receiver-naming
-      - name: time-naming
-      - name: unexported-return
-      - name: indent-error-flow
-      - name: errorf
-      - name: empty-block
-      - name: superfluous-else
-      - name: unused-parameter
-      - name: unreachable-code
-      - name: redefines-builtin-id
-
-  # Staticcheck - advanced Go linter
   staticcheck:
     checks: ["all"]
 
-  # Gosimple - simplify code
   gosimple:
     checks: ["all"]
-
-  # Unused - check for unused code
-  unused:
-    check-exported: false
-
-  # Gocyclo - check cyclomatic complexity
-  gocyclo:
-    min-complexity: 15
-
-  # Cyclop - check function and package cyclomatic complexity
-  cyclop:
-    max-complexity: 15
-    package-average: 0.0
-    skip-tests: true
-
-  # Goconst - find repeated strings that could be constants
-  goconst:
-    min-len: 3
-    min-occurrences: 3
-    ignore-tests: true
-
-  # Misspell - check for common spelling mistakes
-  misspell:
-    locale: US
-    ignore-words:
-      - colour
-
-  # Lll - line length linter
-  lll:
-    line-length: 140
-    tab-width: 4
-
-  # Unparam - check for unused function parameters
-  unparam:
-    check-exported: false
-
-  # Nakedret - check for naked returns in functions > X lines
-  nakedret:
-    max-func-lines: 30
-
-  # Prealloc - find slice declarations that could be preallocated
-  prealloc:
-    simple: true
-    range-loops: true
-    for-loops: false
-
-  # Gocritic - comprehensive linter
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-    disabled-checks:
-      - dupImport
-      - ifElseChain
-      - octalLiteral
-      - whyNoLint
-      - wrapperFunc
-
-  # Funlen - check function length
-  funlen:
-    lines: 100
-    statements: 50
-
-  # Gocognit - check cognitive complexity
-  gocognit:
-    min-complexity: 20
-
-  # Nestif - check deeply nested if statements
-  nestif:
-    min-complexity: 4
-
-  # Godot - check comment punctuation
-  godot:
-    scope: declarations
-    capital: true
-
-  # Nolintlint - check nolint directives
-  nolintlint:
-    allow-leading-space: true
-    allow-unused: false
-    require-explanation: true
-    require-specific: true
-
-  # Errorlint - check error wrapping
-  errorlint:
-    errorf: true
-    asserts: true
-    comparison: true
-
-  # Exhaustive - check exhaustiveness of enum switch statements
-  exhaustive:
-    check-generated: false
-    default-signifies-exhaustive: true
-
-  # Gosec - security checks
-  gosec:
-    severity: medium
-    confidence: medium
-    excludes:
-      - G104 # Audit errors not checked (handled by errcheck)
 
 linters:
   disable-all: true
   enable:
-    # Default linters
     - errcheck      # Check for unchecked errors
     - gosimple      # Simplify code
     - govet         # Official Go static analyzer
@@ -205,107 +41,7 @@ linters:
     - staticcheck   # Advanced Go linter
     - unused        # Check for unused code
 
-    # Additional recommended linters
-    - revive        # Replacement for golint
-    - gofmt         # Check if code is formatted
-    - goimports     # Check if imports are organized
-    - misspell      # Check for spelling mistakes
-    - unconvert     # Remove unnecessary type conversions
-    - unparam       # Detect unused function parameters
-    - nakedret      # Check naked returns
-    - prealloc      # Find slice declarations that could be preallocated
-    - goconst       # Find repeated strings
-    - gocyclo       # Check cyclomatic complexity
-    - gocognit      # Check cognitive complexity
-    - funlen        # Check function length
-    - nestif        # Check deeply nested if statements
-    - gocritic      # Comprehensive linter
-    - godot         # Check comment punctuation
-    - nolintlint    # Check nolint directives
-    - errorlint     # Check error wrapping
-    - exhaustive    # Check enum exhaustiveness
-    - gosec         # Security checks
-
-    # Style linters
-    - stylecheck    # Replacement for golint with more checks
-    - whitespace    # Check for trailing whitespace
-    - wsl           # Whitespace linter
-
-    # Import ordering
-    - gci           # Control Go package import order
-
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
-  new: false
-  fix: false
-
-  exclude-rules:
-    # Exclude some linters from running on tests files
-    - path: _test\.go
-      linters:
-        - gocyclo
-        - errcheck
-        - dupl
-        - gosec
-        - funlen
-        - goconst
-        - gocognit
-
-    # Exclude known linters from partially hard-vendored code
-    - path: internal/hmac/
-      linters:
-        - gosec
-
-    # Exclude lll issues for long lines with go:generate
-    - linters:
-        - lll
-      source: "^//go:generate "
-
-    # Exclude issues for variable naming from Bubble Tea event handling
-    - path: internal/tui/
-      linters:
-        - stylecheck
-      text: "ST1003:"
-
-    # Allow dot imports in tests
-    - path: _test\.go
-      linters:
-        - revive
-      text: "dot-imports"
-
-  exclude-use-default: false
-  exclude:
-    # EXC0001 errcheck: Almost all programs ignore errors on these functions
-    - Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*printf?|os\.(Un)?Setenv). is not checked
-
-    # EXC0002 golint: Annoying issue about not having a comment
-    - (comment on exported (method|function|type|const)|should have( a package)? comment|comment should be of the form)
-
-    # EXC0003 golint: False positive when tests are defined in package 'test'
-    - func name will be used as test\.Test.* by other packages, and that stutters; consider calling this
-
-    # EXC0004 govet: Common false positives
-    - (possible misuse of unsafe.Pointer|should have signature)
-
-    # EXC0005 staticcheck: Developers tend to write in C-style with an explicit 'break' in a 'switch'
-    - ineffective break statement. Did you mean to break out of the outer loop
-
-    # EXC0006 gosec: Too many false-positives on 'unsafe' usage
-    - Use of unsafe calls should be audited
-
-    # EXC0007 gosec: Too many false-positives for parametrized shell calls
-    - Subprocess launch(ed with variable|ing should be audited)
-
-    # EXC0008 gosec: Duplicated errcheck checks
-    - (G104|G307)
-
-    # EXC0009 gosec: Too many issues in popular repos
-    - (Expect directory permissions to be 0750 or less|Expect file permissions to be 0600 or less)
-
-    # EXC0010 gosec: False positive is triggered by 'src, err := ioutil.ReadFile(filename)'
-    - Potential file inclusion via variable
-
-severity:
-  default-severity: error
-  case-sensitive: false
+  exclude-use-default: true

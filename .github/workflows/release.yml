@@ -1,9 +1,5 @@
 # Release Workflow - Automated Release with GoReleaser
 # Triggered on version tags (v*)
-# Builds cross-platform binaries, generates checksums, and creates GitHub releases
-#
-# Status Badge:
-# [![Release](https://github.com/MoshPitCodes/repo.sync/actions/workflows/release.yml/badge.svg)](https://github.com/MoshPitCodes/repo.sync/actions/workflows/release.yml)
 
 name: Release
 
@@ -14,11 +10,10 @@ on:
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
   release:
-    name: Create Release
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
@@ -33,9 +28,6 @@ jobs:
           go-version: '1.24.x'
           cache: true
           cache-dependency-path: go.sum
-
-      - name: Download dependencies
-        run: go mod download
 
       - name: Run tests
         run: go test -v ./...
@@ -46,93 +38,5 @@ jobs:
           distribution: goreleaser
           version: latest
           args: release --clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Fallback manual release if GoReleaser is not configured
-  manual-release:
-    name: Manual Release (Fallback)
-    runs-on: ubuntu-latest
-    if: failure()
-
-    strategy:
-      matrix:
-        include:
-          - goos: linux
-            goarch: amd64
-          - goos: linux
-            goarch: arm64
-          - goos: darwin
-            goarch: amd64
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: amd64
-          - goos: windows
-            goarch: arm64
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.x'
-          cache: true
-          cache-dependency-path: go.sum
-
-      - name: Get version
-        id: version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-
-      - name: Build binary
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 0
-        run: |
-          OUTPUT_NAME="repo-sync-${{ steps.version.outputs.VERSION }}-${{ matrix.goos }}-${{ matrix.goarch }}"
-          if [ "${{ matrix.goos }}" = "windows" ]; then
-            OUTPUT_NAME="${OUTPUT_NAME}.exe"
-          fi
-
-          go build -v -trimpath \
-            -ldflags="-s -w -X main.version=${{ steps.version.outputs.VERSION }} -X main.commit=${{ github.sha }} -X main.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            -o "dist/${OUTPUT_NAME}" .
-
-          cd dist
-          if [ "${{ matrix.goos }}" = "windows" ]; then
-            zip "${OUTPUT_NAME}.zip" "${OUTPUT_NAME}"
-          else
-            tar -czf "${OUTPUT_NAME}.tar.gz" "${OUTPUT_NAME}"
-          fi
-
-          # Generate checksums
-          sha256sum ${OUTPUT_NAME}* > "${OUTPUT_NAME}.sha256"
-
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: |
-            dist/*.tar.gz
-            dist/*.zip
-            dist/*.sha256
-          retention-days: 7
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        if: matrix.goos == 'linux' && matrix.goarch == 'amd64'
-        with:
-          draft: false
-          prerelease: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') || contains(github.ref, 'rc') }}
-          generate_release_notes: true
-          files: |
-            dist/*.tar.gz
-            dist/*.zip
-            dist/*.sha256
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
