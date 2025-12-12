@@ -19,9 +19,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/config"
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/github"
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/local"
+	"github.com/MoshPitCodes/repo.sync/internal/config"
+	"github.com/MoshPitCodes/repo.sync/internal/github"
+	"github.com/MoshPitCodes/repo.sync/internal/local"
 )
 
 // Model is the main Bubble Tea model with unified single-view architecture.

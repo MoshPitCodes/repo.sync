@@ -21,8 +21,8 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/spf13/cobra"
 
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/local"
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/tui"
+	"github.com/MoshPitCodes/repo.sync/internal/local"
+	"github.com/MoshPitCodes/repo.sync/internal/tui"
 )
 
 var (

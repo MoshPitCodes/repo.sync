@@ -25,8 +25,8 @@ import (
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/github"
-	"github.com/MoshPitCodes/moshpitcodes.reposync/internal/local"
+	"github.com/MoshPitCodes/repo.sync/internal/github"
+	"github.com/MoshPitCodes/repo.sync/internal/local"
 )
 
 // InlineProgressModel manages inline progress display during sync.

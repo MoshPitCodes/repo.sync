@@ -9,7 +9,7 @@ bin/
 # Built Go binaries
 repo-sync
 reposync
-moshpitcodes.reposync
+repo.sync
 
 # Test binary, built with `go test -c`
 *.test
