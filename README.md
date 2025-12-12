@@ -1,29 +1,33 @@
+<!-- DO NOT TOUCH THIS SECTION#1: START -->
 <h1 align="center">
-   repo-sync
    <br>
-   Repository Synchronization Tool with Interactive TUI
-</h1>
-
-<div align="center">
-   <p>A powerful CLI tool for synchronizing repositories from GitHub or local sources with an interactive terminal UI powered by Bubble Tea</p>
+      repo-sync | Repository Synchronization Tool with Interactive TUI
+   <br>
 
    <div align="center">
-      <a href="https://github.com/MoshPitCodes/repo.sync/stargazers">
-         <img src="https://img.shields.io/github/stars/MoshPitCodes/repo.sync?color=7C3AED&labelColor=1E1E2E&style=for-the-badge&logo=starship&logoColor=7C3AED">
-      </a>
-      <a href="https://github.com/MoshPitCodes/repo.sync/">
-         <img src="https://img.shields.io/github/repo-size/MoshPitCodes/repo.sync?color=06B6D4&labelColor=1E1E2E&style=for-the-badge&logo=github&logoColor=06B6D4">
-      </a>
-      <a href="https://github.com/MoshPitCodes/repo.sync/blob/main/LICENSE">
-         <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=Apache-2.0&colorA=1E1E2E&colorB=10B981&logo=apache&logoColor=10B981&"/>
-      </a>
-      <a href="https://go.dev/">
-         <img src="https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go&logoColor=white&labelColor=1E1E2E"/>
-      </a>
+      <p>A powerful CLI tool for synchronizing repositories from GitHub or local sources with an interactive terminal UI powered by Bubble Tea</p>
+      <div align="center">
+         <a href="https://github.com/MoshPitCodes/repo.sync/stargazers">
+            <img src="https://img.shields.io/github/stars/MoshPitCodes/repo.sync?color=7C3AED&labelColor=1E1E2E&style=for-the-badge&logo=starship&logoColor=7C3AED">
+         </a>
+         <a href="https://github.com/MoshPitCodes/repo.sync/">
+            <img src="https://img.shields.io/github/repo-size/MoshPitCodes/repo.sync?color=06B6D4&labelColor=1E1E2E&style=for-the-badge&logo=github&logoColor=06B6D4">
+         </a>
+         <a href="https://github.com/MoshPitCodes/repo.sync/blob/main/LICENSE">
+            <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=Apache-2.0&colorA=1E1E2E&colorB=10B981&logo=apache&logoColor=10B981&"/>
+         </a>
+         <a href="https://go.dev/">
+            <img src="https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go&logoColor=white&labelColor=1E1E2E"/>
+         </a>
+      </div>
+      <br>
    </div>
-</div>
+</h1>
 
-## Overview
+<br/>
+<!-- DO NOT TOUCH THIS SECTION#1: END -->
+
+# 🗃️ Overview
 
 `repo-sync` is a modern Go CLI application that simplifies repository management by providing an elegant, interactive terminal user interface for synchronizing repositories. Whether you need to clone GitHub repositories or copy local repositories to a unified location, repo-sync makes it effortless with its intuitive TUI.
 
@@ -45,244 +49,39 @@ Built with Bubble Tea and following The Elm Architecture, repo-sync offers both 
 - **Keyboard-Driven** - Comprehensive keyboard shortcuts for all actions
 - **Idiomatic Go** - Built following Go 1.24+ best practices and patterns
 
-## Features Showcase
+<br/>
 
-### Interactive Terminal UI
-- **Tabbed Interface**: Switch between Personal, Organizations, and Local repositories with a single keypress
-- **Smart Search**: Real-time filtering as you type
-- **Flexible Sorting**: Sort by name, last updated, stars, or size
-- **Multi-Select**: Select individual repos or use `a` to select all, `n` to deselect all
-- **Owner Selector**: Quickly switch between your account and organizations
-- **Visual Progress**: Inline progress bar with detailed sync results
-- **Help Overlay**: Built-in help (`?` key) showing all keyboard shortcuts
-- **Settings Panel**: Configure target directory, source directories, and preferences (`c` key)
-- **Conflict Resolution**: Interactive dialog when repositories already exist
+## 📚 Project Structure
 
-### Batch Mode
-For automation and scripting, use batch mode to clone or copy specific repositories without interaction:
-```bash
-# Clone specific GitHub repos
-repo-sync github --owner MoshPitCodes --batch repo1 repo2 repo3
+[`cmd/`](cmd/) - CLI command definitions and entry points
 
-# Copy specific local repos
-repo-sync local --batch /path/to/repo1 /path/to/repo2
-```
+[`internal/config/`](internal/config/) - Configuration management with persistent storage to `~/.config/repo-sync/config.json`
 
-## How It Works
+[`internal/github/`](internal/github/) - GitHub API client implementation using [go-gh](https://github.com/cli/go-gh)
 
-`repo-sync` provides three distinct modes for repository synchronization:
+[`internal/local/`](internal/local/) - Local filesystem scanner for discovering Git repositories
 
-### 1. Personal Mode
-Browse and clone your personal GitHub repositories. The tool authenticates using the GitHub CLI (`gh`) and fetches all repositories owned by your account. Select multiple repositories using the interactive interface and clone them to your target directory with a single command.
+[`internal/tui/`](internal/tui/) - Bubble Tea TUI components including models, views, tabs, lists, progress bars, settings, owner selector, and dialogs
 
-### 2. Organizations Mode
-Switch to any GitHub organization you belong to and browse their repositories. Use the owner selector (`o` key) to quickly switch between different organizations. Perfect for managing work repositories or open-source projects across multiple organizations.
+[`main.go`](main.go) - Application entry point
 
-### 3. Local Mode
-Discover Git repositories from configured source directories on your filesystem. This mode scans the directories you specify and presents all found repositories in the same interactive interface. Copy selected repositories to your target directory while preserving the Git history.
+<br/>
 
-All modes support:
-- Real-time search and filtering
-- Multiple sort options (name, last updated, stars, etc.)
-- Multi-select with visual feedback
-- Inline progress tracking with detailed results
-- Smart conflict handling when repositories already exist
+## 📓 Project Components
 
-## Use Cases
+| Component                      | Responsibility                                                                                           |
+| ------------------------------ | :------------------------------------------------------------------------------------------------------- |
+| **CLI Commands**               | Root command with TUI launcher, GitHub subcommand (interactive/batch), Local subcommand (interactive/batch) |
+| **Configuration Management**   | Environment variable handling, persistent storage (`~/.config/repo-sync/config.json`), settings UI      |
+| **GitHub Integration**         | API client using go-gh, repository listing, organization management, authentication via GitHub CLI      |
+| **Local Scanner**              | Filesystem scanning for Git repositories, directory traversal, repository metadata extraction           |
+| **TUI Framework**              | Bubble Tea model/view architecture, tab navigation, repository list view, multi-select functionality    |
+| **TUI Components**             | Progress tracking, settings overlay, owner selector, conflict resolution dialog, keyboard shortcuts     |
+| **Synchronization Engine**     | Git clone operations, local repository copying, conflict detection, progress reporting                  |
 
-- **New Machine Setup**: Quickly clone all your repositories to a new development machine
-- **Repository Organization**: Consolidate repositories from multiple locations into a unified directory
-- **Team Onboarding**: Clone all organization repositories for new team members
-- **Backup and Migration**: Copy local repositories to a backup location
-- **Development Environment Sync**: Keep development, work, and personal repos organized in separate directories
-- **Multi-Organization Management**: Easily switch between personal and multiple organization repositories
-- **Automated Workflows**: Use batch mode in scripts to automate repository synchronization tasks
+<br/>
 
-## Installation
-
-### Prerequisites
-
-- Go 1.24 or later
-- Git
-- GitHub CLI (`gh`) - for GitHub synchronization
-- Authenticated GitHub account (run `gh auth login`)
-
-### Build from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/MoshPitCodes/repo.sync.git
-cd repo.sync
-
-# Build the binary
-go build -o repo-sync
-
-# Install globally (optional)
-go install
-```
-
-### Using Go Install
-
-```bash
-go install github.com/MoshPitCodes/repo.sync@latest
-```
-
-## Quick Start
-
-### Interactive Mode
-
-Launch the interactive TUI menu:
-
-```bash
-repo-sync
-```
-
-This launches a tabbed interface with three modes:
-- **Personal** - Browse your personal GitHub repositories
-- **Organizations** - Browse organization repositories
-- **Local** - Browse local Git repositories from configured directories
-
-### GitHub Mode
-
-Sync repositories from GitHub interactively:
-
-```bash
-repo-sync github --owner MoshPitCodes
-```
-
-Or use batch mode to clone specific repositories:
-
-```bash
-repo-sync github --owner MoshPitCodes --batch repo1 repo2 repo3
-```
-
-### Local Mode
-
-Sync local repositories interactively:
-
-```bash
-repo-sync local
-```
-
-Or use batch mode to copy specific repositories:
-
-```bash
-repo-sync local --batch /path/to/repo1 /path/to/repo2
-```
-
-## Configuration
-
-Configure `repo-sync` using environment variables:
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `REPO_SYNC_TARGET_DIR` | Target directory for cloning/copying repositories | `~/repos` |
-| `REPO_SYNC_GITHUB_OWNER` | Default GitHub owner/organization | Current user |
-| `REPO_SYNC_SOURCE_DIRS` | Colon-separated list of directories to scan for local repos | None |
-
-Settings can also be configured interactively by pressing `c` in the TUI. Configuration is persisted to `~/.config/repo-sync/config.json` and includes:
-
-- Target directory for synchronized repositories
-- Source directories for local repository scanning
-- Default GitHub owner
-- Recent owners list
-- UI preferences (compact mode)
-
-### Example Configuration
-
-```bash
-# Add to ~/.bashrc or ~/.zshrc
-export REPO_SYNC_TARGET_DIR="$HOME/projects"
-export REPO_SYNC_GITHUB_OWNER="MoshPitCodes"
-export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/work:$HOME/personal"
-```
-
-## Usage
-
-### Command Reference
-
-```
-repo-sync                                         # Launch interactive TUI with tabs
-repo-sync github                                  # GitHub interactive mode (Personal tab)
-repo-sync github --owner <owner>                  # GitHub mode with specific owner
-repo-sync github --owner <owner> --batch <repos...>  # Batch clone repos
-repo-sync local                                   # Local interactive mode
-repo-sync local --batch <paths...>                # Batch copy repos
-```
-
-### Interactive Features
-
-#### Tab Navigation
-
-- **Personal (1)**: View your personal GitHub repositories
-- **Organizations (2)**: View organization repositories (use `o` to switch owners)
-- **Local (3)**: View local repositories from configured directories
-- **Switch Tabs**: Press `1`, `2`, or `3` to jump directly, or use `tab`/`shift+tab`
-
-#### Repository List View
-
-- **Navigation**: Use `↑`/`↓` or `k`/`j` to navigate, `pgup`/`pgdown` for pages
-- **Selection**: Press `space` to toggle selection
-- **Select All**: Press `a` to select all repositories
-- **Deselect All**: Press `n` to deselect all
-- **Search**: Press `/` to enter search/filter mode
-- **Sort**: Press `s` to cycle through sort modes (name, updated, stars, etc.)
-- **Owner**: Press `o` to open the owner selector (GitHub modes only)
-- **Settings**: Press `c` to open configuration settings
-- **Help**: Press `?` to view keyboard shortcuts
-- **Sync**: Press `enter` to start synchronization
-- **Quit**: Press `q` or `ctrl+c` to exit
-
-#### Search/Filter Mode
-
-- Type to filter repositories in real-time
-- Filter applies to repository names
-- Press `enter` or `esc` to exit search mode
-
-### Examples
-
-#### Browse and Clone GitHub Repositories
-
-```bash
-# Launch the TUI
-repo-sync
-
-# In the TUI:
-# 1. Press '1' for Personal repos or '2' for Organizations
-# 2. Press 'o' to switch owner (if needed)
-# 3. Use arrow keys to navigate
-# 4. Press 'space' to select repositories
-# 5. Press '/' to search/filter
-# 6. Press 's' to sort
-# 7. Press 'enter' to clone selected repositories
-```
-
-#### Batch Clone Specific Repositories
-
-```bash
-repo-sync github --owner MoshPitCodes --batch \
-  repo.sync \
-  moshpitcodes.template \
-  moshpitcodes.nixos
-```
-
-#### Discover and Copy Local Repositories
-
-```bash
-# Configure source directories (or set via Settings with 'c' in TUI)
-export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/projects"
-
-# Launch the TUI
-repo-sync
-
-# In the TUI:
-# 1. Press '3' to switch to Local tab
-# 2. Browse discovered repositories from configured directories
-# 3. Select repositories with 'space'
-# 4. Press 'enter' to copy to target directory
-```
-
-## Architecture
+# 📐 Architecture
 
 ```mermaid
 graph TB
@@ -292,18 +91,18 @@ graph TB
         B --> D[cmd/local.go]
     end
 
-    subgraph "Configuration"
+    subgraph "Configuration Layer"
         E[internal/config/config.go]
         E1[internal/config/store.go]
         E --> E1
     end
 
-    subgraph "Business Logic"
+    subgraph "Business Logic Layer"
         F[internal/github/client.go]
         G[internal/local/scanner.go]
     end
 
-    subgraph "TUI Layer (Bubble Tea)"
+    subgraph "TUI Layer - Bubble Tea"
         H[internal/tui/model.go]
         I[internal/tui/tabs.go]
         J[internal/tui/list.go]
@@ -330,136 +129,381 @@ graph TB
     F --> E
     G --> E
     L --> E1
+
+    style A fill:#7C3AED,stroke:#1E1E2E,color:#fff
+    style B fill:#06B6D4,stroke:#1E1E2E,color:#fff
+    style C fill:#06B6D4,stroke:#1E1E2E,color:#fff
+    style D fill:#06B6D4,stroke:#1E1E2E,color:#fff
+    style E fill:#10B981,stroke:#1E1E2E,color:#fff
+    style E1 fill:#10B981,stroke:#1E1E2E,color:#fff
+    style F fill:#F59E0B,stroke:#1E1E2E,color:#fff
+    style G fill:#F59E0B,stroke:#1E1E2E,color:#fff
+    style H fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style I fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style J fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style K fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style L fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style M fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style N fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style O fill:#EC4899,stroke:#1E1E2E,color:#fff
+    style P fill:#EC4899,stroke:#1E1E2E,color:#fff
 ```
 
-### Project Structure
+### Detailed Structure
 
 ```
 repo.sync/
 ├── cmd/
-│   ├── root.go           # Root command and TUI launcher
+│   ├── root.go           # Root command and TUI launcher with tab support
 │   ├── github.go         # GitHub subcommand (batch/interactive)
 │   └── local.go          # Local subcommand (batch/interactive)
 ├── internal/
 │   ├── config/
-│   │   ├── config.go     # Configuration management
-│   │   └── store.go      # Persistent config storage
+│   │   ├── config.go     # Configuration management and environment variables
+│   │   └── store.go      # Persistent config storage (~/.config/repo-sync/config.json)
 │   ├── github/
 │   │   └── client.go     # GitHub API client (via go-gh)
 │   ├── local/
-│   │   └── scanner.go    # Local filesystem scanner
+│   │   └── scanner.go    # Local filesystem scanner for Git repositories
 │   └── tui/
-│       ├── model.go      # Main Bubble Tea model
-│       ├── view.go       # View rendering
-│       ├── tabs.go       # Tab bar (Personal/Orgs/Local)
-│       ├── list.go       # Repository list view
-│       ├── progress.go   # Inline progress tracking
-│       ├── settings.go   # Settings overlay
-│       ├── owner_selector.go  # GitHub owner selector
-│       ├── dialog.go     # Repository exists dialog
-│       ├── messages.go   # Bubble Tea messages
-│       ├── keymap.go     # Keyboard shortcuts
-│       └── styles.go     # Lipgloss styles
+│       ├── model.go      # Main Bubble Tea model (state management)
+│       ├── view.go       # View rendering logic
+│       ├── tabs.go       # Tab bar (Personal/Organizations/Local)
+│       ├── list.go       # Repository list view with selection
+│       ├── progress.go   # Inline progress tracking during sync
+│       ├── settings.go   # Settings overlay (config editor)
+│       ├── owner_selector.go  # GitHub owner/org selector
+│       ├── dialog.go     # Repository exists conflict dialog
+│       ├── messages.go   # Bubble Tea messages (events)
+│       ├── keymap.go     # Keyboard shortcuts and bindings
+│       └── styles.go     # Lipgloss styles (colors, formatting)
 ├── main.go               # Application entry point
 ├── go.mod                # Go module definition
 └── README.md             # This file
 ```
 
-## Technology Stack
+<br/>
 
-- **Language**: Go 1.24+
-- **TUI Framework**: [Bubble Tea v1.2+](https://github.com/charmbracelet/bubbletea) - Terminal UI framework using The Elm Architecture
-- **UI Components**: [Bubbles v0.20+](https://github.com/charmbracelet/bubbles) - Reusable TUI components
-- **Styling**: [Lipgloss v1.0+](https://github.com/charmbracelet/lipgloss) - Style definitions and rendering
-- **GitHub API**: [go-gh v2](https://github.com/cli/go-gh) - Official GitHub CLI library
-- **CLI Framework**: [Cobra v1.8+](https://github.com/spf13/cobra) - Command-line interface structure
+# 🚀 **Installation**
 
-## Development
+> [!CAUTION]
+> This tool will clone or copy Git repositories to your specified target directory. Ensure you review the configuration and understand the sync operations before executing them. While repo-sync includes conflict detection, you should backup important data before bulk synchronization operations.
 
-### Building
+> [!WARNING]
+> You **must** have the GitHub CLI (`gh`) installed and authenticated to use GitHub synchronization features. Run `gh auth login` before using `repo-sync github` commands.
+
+<br/>
+
+## 1. **Prerequisites**
+
+Before installing repo-sync, ensure you have the following dependencies:
+
+- **Go 1.24 or later** - [Download](https://go.dev/dl/)
+- **Git** - Version control system
+- **GitHub CLI (`gh`)** - For GitHub synchronization (run `gh auth login` after installation)
+- Authenticated GitHub account (for GitHub mode)
+
+> [!NOTE]
+> This tool has been tested with the following parameters:
+> - Go 1.24+ on Linux, macOS, and Windows
+> - GitHub CLI v2.40.0+
+> - Git 2.40.0+
+
+<br/>
+
+## 2. **Installation Methods**
+
+### Using Go Install (Recommended)
 
 ```bash
-# Build for current platform
+go install github.com/MoshPitCodes/repo.sync@latest
+```
+
+This will install the `repo-sync` binary to your `$GOPATH/bin` directory.
+
+### Build from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/MoshPitCodes/repo.sync.git
+cd repo.sync
+
+# Build the binary
 go build -o repo-sync
 
-# Build with version info
+# Install globally (optional)
+go install
+```
+
+### Building with Version Info
+
+```bash
+# Build with version information embedded
 go build -ldflags "-X main.version=1.0.0" -o repo-sync
 
-# Build for multiple platforms
+# Cross-compile for different platforms
 GOOS=linux GOARCH=amd64 go build -o repo-sync-linux-amd64
 GOOS=darwin GOARCH=amd64 go build -o repo-sync-darwin-amd64
 GOOS=windows GOARCH=amd64 go build -o repo-sync-windows-amd64.exe
 ```
 
-### Testing
+<br/>
+
+## 3. **Configuration**
+
+> [!TIP]
+> You can configure repo-sync using environment variables, or interactively by pressing `c` in the TUI to open the settings panel.
+
+### Environment Variables
+
+Configure `repo-sync` using the following environment variables:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `REPO_SYNC_TARGET_DIR` | Target directory for cloning/copying repositories | `~/repos` |
+| `REPO_SYNC_GITHUB_OWNER` | Default GitHub owner/organization | Current user |
+| `REPO_SYNC_SOURCE_DIRS` | Colon-separated list of directories to scan for local repos | None |
+
+### Example Configuration
+
+Add to your `~/.bashrc`, `~/.zshrc`, or equivalent:
 
 ```bash
-# Run tests
-go test ./...
+# Target directory for synchronized repositories
+export REPO_SYNC_TARGET_DIR="$HOME/projects"
 
-# Run tests with coverage
-go test -cover ./...
+# Default GitHub owner/organization
+export REPO_SYNC_GITHUB_OWNER="MoshPitCodes"
 
-# Run tests with race detection
-go test -race ./...
+# Directories to scan for local repositories (colon-separated)
+export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/work:$HOME/personal"
 ```
 
-### Code Quality
+### Persistent Configuration
+
+Settings are persisted to `~/.config/repo-sync/config.json` and include:
+
+- Target directory for synchronized repositories
+- Source directories for local repository scanning
+- Default GitHub owner
+- Recent owners list (for quick switching)
+- UI preferences (compact mode, etc.)
+
+<br/>
+
+# 📝 **Usage**
+
+## Quick Start
+
+### Interactive Mode
+
+Launch the interactive TUI menu with tabbed interface:
 
 ```bash
-# Format code
-gofmt -w .
-goimports -w .
-
-# Lint code
-golangci-lint run
-
-# Vet code
-go vet ./...
+repo-sync
 ```
 
-## Contributing
+This launches a tabbed interface with three modes:
+- **Personal (Tab 1)** - Browse your personal GitHub repositories
+- **Organizations (Tab 2)** - Browse organization repositories
+- **Local (Tab 3)** - Browse local Git repositories from configured directories
 
-Contributions are welcome! Please follow these guidelines:
+### GitHub Mode
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes using conventional commits
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Sync repositories from GitHub interactively:
 
-### Conventional Commits
+```bash
+# Launch GitHub mode (Personal tab by default)
+repo-sync github
 
-We use conventional commits for clear commit history:
+# Launch with specific owner/organization
+repo-sync github --owner MoshPitCodes
+```
 
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `refactor:` - Code refactoring
-- `test:` - Test updates
-- `chore:` - Maintenance tasks
+Batch mode to clone specific repositories:
 
-## License
+```bash
+repo-sync github --owner MoshPitCodes --batch repo1 repo2 repo3
+```
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+### Local Mode
 
-## Credits
+Sync local repositories interactively:
 
-Built with:
+```bash
+repo-sync local
+```
 
-- [Bubble Tea](https://github.com/charmbracelet/bubbletea) - Terminal UI framework
-- [Bubbles](https://github.com/charmbracelet/bubbles) - TUI components
-- [Lipgloss](https://github.com/charmbracelet/lipgloss) - Style definitions
-- [go-gh](https://github.com/cli/go-gh) - GitHub API client
-- [Cobra](https://github.com/spf13/cobra) - CLI framework
+Batch mode to copy specific repositories:
 
-## Support
+```bash
+repo-sync local --batch /path/to/repo1 /path/to/repo2
+```
 
-- Report bugs via [GitHub Issues](https://github.com/MoshPitCodes/repo.sync/issues)
-- Ask questions in [GitHub Discussions](https://github.com/MoshPitCodes/repo.sync/discussions)
+<br/>
 
----
+## Command Reference
 
-<div align="center">
-   Made with ❤️ by <a href="https://github.com/MoshPitCodes">MoshPitCodes</a>
+```bash
+repo-sync                                         # Launch interactive TUI with tabs
+repo-sync github                                  # GitHub interactive mode (Personal tab)
+repo-sync github --owner <owner>                  # GitHub mode with specific owner
+repo-sync github --owner <owner> --batch <repos...>  # Batch clone repos
+repo-sync local                                   # Local interactive mode
+repo-sync local --batch <paths...>                # Batch copy repos
+```
+
+<br/>
+
+## Interactive Features
+
+<details>
+<summary>
+<b>Tab Navigation</b> - Switch between Personal, Organizations, and Local modes
+</summary>
+
+- **Personal (1)**: View your personal GitHub repositories
+- **Organizations (2)**: View organization repositories (use `o` to switch owners)
+- **Local (3)**: View local repositories from configured directories
+- **Switch Tabs**: Press `1`, `2`, or `3` to jump directly, or use `tab`/`shift+tab` to cycle
+
+</details>
+
+<details>
+<summary>
+<b>Repository List View</b> - Navigate, select, and manage repositories
+</summary>
+
+- **Navigation**: Use `↑`/`↓` or `k`/`j` to navigate, `pgup`/`pgdown` for page scrolling
+- **Selection**: Press `space` to toggle selection of individual repositories
+- **Select All**: Press `a` to select all repositories in the current list
+- **Deselect All**: Press `n` to deselect all repositories
+- **Search**: Press `/` to enter search/filter mode (real-time filtering)
+- **Sort**: Press `s` to cycle through sort modes (name, updated, stars, size)
+- **Owner**: Press `o` to open the owner selector (GitHub modes only)
+- **Settings**: Press `c` to open configuration settings
+- **Help**: Press `?` to view all keyboard shortcuts
+- **Sync**: Press `enter` to start synchronization of selected repositories
+- **Quit**: Press `q` or `ctrl+c` to exit
+
+</details>
+
+<details>
+<summary>
+<b>Search and Filter</b> - Real-time repository filtering
+</summary>
+
+- Type to filter repositories by name in real-time
+- Filter applies immediately as you type
+- Press `enter` or `esc` to exit search mode and return to normal navigation
+- Search works across all tabs (Personal, Organizations, Local)
+
+</details>
+
+<br/>
+
+## Examples
+
+### Browse and Clone GitHub Repositories
+
+```bash
+# Launch the TUI
+repo-sync
+
+# In the TUI:
+# 1. Press '1' for Personal repos or '2' for Organizations
+# 2. Press 'o' to switch owner (if needed)
+# 3. Use arrow keys or j/k to navigate
+# 4. Press 'space' to select repositories
+# 5. Press '/' to search/filter
+# 6. Press 's' to change sort order
+# 7. Press 'enter' to clone selected repositories
+```
+
+### Batch Clone Specific Repositories
+
+```bash
+# Clone multiple repositories from a specific owner
+repo-sync github --owner MoshPitCodes --batch \
+  repo.sync \
+  moshpitcodes.template \
+  moshpitcodes.nixos
+```
+
+### Discover and Copy Local Repositories
+
+```bash
+# Configure source directories (or set via Settings with 'c' in TUI)
+export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/projects"
+
+# Launch the TUI
+repo-sync
+
+# In the TUI:
+# 1. Press '3' to switch to Local tab
+# 2. Browse discovered repositories from configured directories
+# 3. Select repositories with 'space'
+# 4. Press 'enter' to copy to target directory
+```
+
+### Batch Copy Local Repositories
+
+```bash
+# Copy specific local repositories to target directory
+repo-sync local --batch \
+  /home/user/dev/project1 \
+  /home/user/dev/project2 \
+  /home/user/work/project3
+```
+
+<br/>
+
+# 🖼️ Gallery
+
+<p align="center">
+   Screenshots coming soon
+   <br>
+   <i>The interactive TUI with tabbed interface, repository selection, and real-time progress tracking</i>
+</p>
+
+<br/>
+
+# 👥 Credits
+
+Built with the following excellent libraries:
+
+- [Bubble Tea](https://github.com/charmbracelet/bubbletea): Terminal UI framework based on The Elm Architecture
+- [Bubbles](https://github.com/charmbracelet/bubbles): Reusable TUI components for Bubble Tea
+- [Lipgloss](https://github.com/charmbracelet/lipgloss): Style definitions and rendering for terminal UIs
+- [go-gh](https://github.com/cli/go-gh): Official GitHub CLI library for Go
+- [Cobra](https://github.com/spf13/cobra): Modern CLI framework for Go
+
+Special thanks to:
+
+- [Charm](https://charm.sh/): For creating the amazing Bubble Tea ecosystem
+- [GitHub CLI Team](https://cli.github.com/): For the official Go library
+
+Other resources and inspiration:
+
+- [The Elm Architecture](https://guide.elm-lang.org/architecture/): Architectural pattern used in Bubble Tea
+- [Conventional Commits](https://www.conventionalcommits.org/): Commit message convention
+
+<br/>
+
+<!-- DO NOT TOUCH THIS SECTION#2: START -->
+<!-- # ✨ Stars History -->
+
+<br/>
+
+<p align="center"><img src="https://api.star-history.com/svg?repos=MoshPitCodes/repo.sync&type=Timeline&theme=dark" /></p>
+
+<br/>
+
+<p align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" /></p>
+
+<!-- end of page, send back to the top -->
+
+<div align="right">
+  <a href="#readme">Back to the Top</a>
 </div>
+<!-- DO NOT TOUCH THIS SECTION#2: END -->
