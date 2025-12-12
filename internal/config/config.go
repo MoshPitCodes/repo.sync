@@ -80,7 +80,10 @@ func (c *Config) MergeWithPersisted(p *PersistedConfig) *Config {
 			merged.TargetDir = expandTilde(p.TargetDir)
 		} else {
 			// Default if neither env nor persisted
-			homeDir, _ := os.UserHomeDir()
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				homeDir = "."
+			}
 			merged.TargetDir = filepath.Join(homeDir, "repos")
 		}
 	}

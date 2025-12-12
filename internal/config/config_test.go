@@ -166,25 +166,13 @@ func TestLoad(t *testing.T) {
 	homeDir, err := os.UserHomeDir()
 	require.NoError(t, err)
 
-	// Save original env vars
-	origTargetDir := os.Getenv("REPO_SYNC_TARGET_DIR")
-	origOwner := os.Getenv("REPO_SYNC_GITHUB_OWNER")
-	origSourceDirs := os.Getenv("REPO_SYNC_SOURCE_DIRS")
-
-	// Restore after test
-	defer func() {
-		os.Setenv("REPO_SYNC_TARGET_DIR", origTargetDir)
-		os.Setenv("REPO_SYNC_GITHUB_OWNER", origOwner)
-		os.Setenv("REPO_SYNC_SOURCE_DIRS", origSourceDirs)
-	}()
-
 	t.Run("loads from environment variables", func(t *testing.T) {
-		os.Setenv("REPO_SYNC_TARGET_DIR", "/tmp/test")
-		os.Setenv("REPO_SYNC_GITHUB_OWNER", "testowner")
-		os.Setenv("REPO_SYNC_SOURCE_DIRS", "/path1:/path2:/path3")
+		t.Setenv("REPO_SYNC_TARGET_DIR", "/tmp/test")
+		t.Setenv("REPO_SYNC_GITHUB_OWNER", "testowner")
+		t.Setenv("REPO_SYNC_SOURCE_DIRS", "/path1:/path2:/path3")
 
-		cfg, err := Load()
-		require.NoError(t, err)
+		cfg, loadErr := Load()
+		require.NoError(t, loadErr)
 
 		assert.Equal(t, "/tmp/test", cfg.TargetDir)
 		assert.Equal(t, "testowner", cfg.GitHubOwner)
@@ -192,12 +180,12 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("empty values when env vars not set", func(t *testing.T) {
-		os.Unsetenv("REPO_SYNC_TARGET_DIR")
-		os.Unsetenv("REPO_SYNC_GITHUB_OWNER")
-		os.Unsetenv("REPO_SYNC_SOURCE_DIRS")
+		t.Setenv("REPO_SYNC_TARGET_DIR", "")
+		t.Setenv("REPO_SYNC_GITHUB_OWNER", "")
+		t.Setenv("REPO_SYNC_SOURCE_DIRS", "")
 
-		cfg, err := Load()
-		require.NoError(t, err)
+		cfg, loadErr := Load()
+		require.NoError(t, loadErr)
 
 		assert.Equal(t, "", cfg.TargetDir)
 		assert.Equal(t, "", cfg.GitHubOwner)
@@ -205,12 +193,12 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("expands tilde in source dirs from env", func(t *testing.T) {
-		os.Unsetenv("REPO_SYNC_TARGET_DIR")
-		os.Unsetenv("REPO_SYNC_GITHUB_OWNER")
-		os.Setenv("REPO_SYNC_SOURCE_DIRS", "~/Development:~/Projects:/absolute/path")
+		t.Setenv("REPO_SYNC_TARGET_DIR", "")
+		t.Setenv("REPO_SYNC_GITHUB_OWNER", "")
+		t.Setenv("REPO_SYNC_SOURCE_DIRS", "~/Development:~/Projects:/absolute/path")
 
-		cfg, err := Load()
-		require.NoError(t, err)
+		cfg, loadErr := Load()
+		require.NoError(t, loadErr)
 
 		expected := []string{
 			filepath.Join(homeDir, "Development"),

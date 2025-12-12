@@ -31,20 +31,31 @@ import (
 
 // InlineProgressModel manages inline progress display during sync.
 type InlineProgressModel struct {
-	repos          []string
-	targetDir      string
-	mode           string // "github" or "local"
+	// Complex types first
+	progressBar progress.Model
+	spinner     spinner.Model
+
+	// Slices (24 bytes each)
+	repos   []string
+	results []SyncResult
+
+	// Strings (16 bytes each)
+	targetDir   string
+	mode        string // "github" or "local"
+	currentRepo string
+
+	// Time (24 bytes each)
+	startTime time.Time
+	endTime   time.Time
+
+	// Ints (8 bytes each)
 	current        int
 	total          int
-	currentRepo    string
-	results        []SyncResult
-	progressBar    progress.Model
-	spinner        spinner.Model
+	pendingRepoIdx int
+
+	// Bools (1 byte each, grouped together)
 	running        bool
 	complete       bool
-	startTime      time.Time
-	endTime        time.Time
-	pendingRepoIdx int
 	skipAll        bool
 	refreshAll     bool
 	waitingForUser bool
