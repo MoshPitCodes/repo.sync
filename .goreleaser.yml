@@ -1,0 +1,167 @@
+# GoReleaser configuration for repo-sync
+# https://goreleaser.com/customization/
+
+version: 2
+
+# Basic project information
+project_name: repo-sync
+
+# Before hooks - run before building
+before:
+  hooks:
+    # Clean up any previous builds
+    - go clean -cache
+    # Ensure dependencies are up to date
+    - go mod tidy
+    # Run tests before building
+    - go test -v ./...
+
+# Build configuration
+builds:
+  - id: repo-sync
+    binary: repo-sync
+    main: .
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    # Ignore specific combinations that don't make sense
+    ignore:
+      - goos: windows
+        goarch: arm64
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
+    flags:
+      - -trimpath
+
+# Archive configuration
+archives:
+  - id: repo-sync-archive
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+      - CHANGELOG.md
+
+# Checksum configuration
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+# Snapshot configuration (for local builds)
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+# Changelog configuration
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+      - '^chore:'
+      - '^build(deps):'
+      - 'merge conflict'
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+  groups:
+    - title: 'New Features'
+      regexp: '^.*?feat(\(.+\))??!?:.+$'
+      order: 0
+    - title: 'Bug Fixes'
+      regexp: '^.*?fix(\(.+\))??!?:.+$'
+      order: 1
+    - title: 'Performance Improvements'
+      regexp: '^.*?perf(\(.+\))??!?:.+$'
+      order: 2
+    - title: 'Refactorings'
+      regexp: '^.*?refactor(\(.+\))??!?:.+$'
+      order: 3
+    - title: 'Documentation'
+      regexp: '^.*?docs(\(.+\))??!?:.+$'
+      order: 4
+    - title: 'Other Changes'
+      order: 999
+
+# Release configuration
+release:
+  github:
+    owner: MoshPitCodes
+    name: repo.sync
+  draft: false
+  prerelease: auto
+  mode: replace
+  header: |
+    ## repo-sync {{.Tag}}
+
+    **Full Changelog**: https://github.com/MoshPitCodes/repo.sync/compare/{{.PreviousTag}}...{{.Tag}}
+  footer: |
+    ## Installation
+
+    ### Binary Downloads
+    Download the appropriate binary for your platform from the assets below.
+
+    ### Using Go
+    ```bash
+    go install github.com/MoshPitCodes/repo.sync@{{.Tag}}
+    ```
+
+    ### Verification
+    Verify checksums using:
+    ```bash
+    sha256sum -c checksums.txt
+    ```
+  disable: false
+  skip_upload: false
+
+# Homebrew tap (optional - uncomment if you have a tap repository)
+# brews:
+#   - repository:
+#       owner: MoshPitCodes
+#       name: homebrew-tap
+#     commit_author:
+#       name: goreleaserbot
+#       email: bot@goreleaser.com
+#     homepage: https://github.com/MoshPitCodes/repo.sync
+#     description: "CLI tool for synchronizing repositories from GitHub or local sources"
+#     license: "Apache-2.0"
+#     install: |
+#       bin.install "repo-sync"
+#     test: |
+#       system "#{bin}/repo-sync --version"
+
+# Metadata
+metadata:
+  mod_timestamp: '{{ .CommitTimestamp }}'
+
+# Announce (optional - uncomment to enable)
+# announce:
+#   skip: '{{gt .Patch 0}}'
+#   twitter:
+#     enabled: true
+#     message_template: 'repo-sync {{ .Tag }} is out! Check it out: {{ .ReleaseURL }}'
+#   discord:
+#     enabled: true
+#     message_template: 'repo-sync {{ .Tag }} is out!'
