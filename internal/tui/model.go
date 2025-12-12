@@ -79,6 +79,10 @@ func NewModel(cfg *config.Config) (Model, error) {
 		owner = mergedCfg.GitHubOwner
 	}
 
+	// Create list model and set compact mode from persisted config
+	list := NewListModel()
+	list.SetCompactMode(persistedCfg.CompactMode)
+
 	return Model{
 		config:           mergedCfg,
 		store:            store,
@@ -87,7 +91,7 @@ func NewModel(cfg *config.Config) (Model, error) {
 		username:         username,
 		orgs:             []string{},
 		tabs:             NewTabBarModel(),
-		list:             NewListModel(),
+		list:             list,
 		settings:         NewSettingsModel(store),
 		progress:         NewInlineProgressModel(),
 		ownerSelector:    NewOwnerSelectorModel(username),
@@ -353,6 +357,8 @@ func (m Model) updateSettings(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Reload config
 			persistedCfg, _ := m.store.Load()
 			m.config = m.config.MergeWithPersisted(persistedCfg)
+			// Update list compact mode from saved config
+			m.list.SetCompactMode(persistedCfg.CompactMode)
 		}
 		return m, nil
 	}

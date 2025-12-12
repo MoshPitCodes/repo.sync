@@ -169,6 +169,11 @@ func NewListModel() *ListModel {
 	}
 }
 
+// SetCompactMode sets the compact mode for the list.
+func (m *ListModel) SetCompactMode(compact bool) {
+	m.compactMode = compact
+}
+
 // SetItems sets the items for the list.
 func (m *ListModel) SetItems(items []ListItem) {
 	m.items = items
