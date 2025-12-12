@@ -6,6 +6,11 @@
 *.dylib
 bin/
 
+# Built Go binaries
+repo-sync
+reposync
+repo.sync
+
 # Test binary, built with `go test -c`
 *.test
 
