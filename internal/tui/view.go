@@ -71,7 +71,7 @@ func (m Model) renderView() string {
 
 // renderHeader renders the application header.
 func (m Model) renderHeader() string {
-	title := headerTitleStyle.Render("🔄 Repo Sync")
+	title := headerTitleStyle.Render("🔄 RepoSync")
 	version := headerVersionStyle.Render(AppVersion)
 
 	rightSection := ""

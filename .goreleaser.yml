@@ -1,10 +1,10 @@
-# GoReleaser configuration for repo-sync
+# GoReleaser configuration for reposync
 # https://goreleaser.com/customization/
 
 version: 2
 
 # Basic project information
-project_name: repo-sync
+project_name: reposync
 
 # Before hooks - run before building
 before:
@@ -18,8 +18,8 @@ before:
 
 # Build configuration
 builds:
-  - id: repo-sync
-    binary: repo-sync
+  - id: reposync
+    binary: reposync
     main: .
     env:
       - CGO_ENABLED=0
@@ -45,7 +45,7 @@ builds:
 
 # Archive configuration
 archives:
-  - id: repo-sync-archive
+  - id: reposync-archive
     format: tar.gz
     name_template: >-
       {{ .ProjectName }}_
@@ -114,7 +114,7 @@ release:
   prerelease: auto
   mode: replace
   header: |
-    ## repo-sync {{.Tag}}
+    ## reposync {{.Tag}}
 
     **Full Changelog**: https://github.com/MoshPitCodes/reposync/compare/{{.PreviousTag}}...{{.Tag}}
   footer: |
@@ -148,9 +148,9 @@ release:
 #     description: "CLI tool for synchronizing repositories from GitHub or local sources"
 #     license: "Apache-2.0"
 #     install: |
-#       bin.install "repo-sync"
+#       bin.install "reposync"
 #     test: |
-#       system "#{bin}/repo-sync --version"
+#       system "#{bin}/reposync --version"
 
 # Metadata
 metadata:
@@ -161,7 +161,7 @@ metadata:
 #   skip: '{{gt .Patch 0}}'
 #   twitter:
 #     enabled: true
-#     message_template: 'repo-sync {{ .Tag }} is out! Check it out: {{ .ReleaseURL }}'
+#     message_template: 'reposync {{ .Tag }} is out! Check it out: {{ .ReleaseURL }}'
 #   discord:
 #     enabled: true
-#     message_template: 'repo-sync {{ .Tag }} is out!'
+#     message_template: 'reposync {{ .Tag }} is out!'

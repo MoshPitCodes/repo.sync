@@ -1,7 +1,7 @@
 <!-- DO NOT TOUCH THIS SECTION#1: START -->
 <h1 align="center">
    <br>
-      repo-sync | Repository Synchronization Tool with Interactive TUI
+      reposync | Repository Synchronization Tool with Interactive TUI
    <br>
 
    <div align="center">
@@ -28,9 +28,9 @@
 
 # 🗃️ Overview
 
-`repo-sync` is a modern Go CLI application that simplifies repository management by providing an elegant, interactive terminal user interface for synchronizing repositories. Whether you need to clone GitHub repositories or copy local repositories to a unified location, repo-sync makes it effortless with its intuitive TUI.
+`reposync` is a modern Go CLI application that simplifies repository management by providing an elegant, interactive terminal user interface for synchronizing repositories. Whether you need to clone GitHub repositories or copy local repositories to a unified location, reposync makes it effortless with its intuitive TUI.
 
-Built with Bubble Tea and following The Elm Architecture, repo-sync offers both interactive and batch modes for maximum flexibility. The interactive mode provides a rich terminal experience with tabs, search, sorting, and real-time progress tracking, while batch mode enables seamless automation in scripts and CI/CD pipelines.
+Built with Bubble Tea and following The Elm Architecture, reposync offers both interactive and batch modes for maximum flexibility. The interactive mode provides a rich terminal experience with tabs, search, sorting, and real-time progress tracking, while batch mode enables seamless automation in scripts and CI/CD pipelines.
 
 ### Key Features
 
@@ -41,7 +41,7 @@ Built with Bubble Tea and following The Elm Architecture, repo-sync offers both 
   - Automatic authentication using GitHub CLI
 - **Local Repository Discovery** - Automatically scans configured directories for Git repositories
 - **Batch Mode** - Non-interactive mode for automation and scripting
-- **Persistent Configuration** - Settings stored in `~/.config/repo-sync/config.json`
+- **Persistent Configuration** - Settings stored in `~/.config/reposync/config.json`
 - **Smart Conflict Handling** - Interactive dialog when repositories already exist
 - **Tabbed Navigation** - Quick switching between Personal, Organizations, and Local modes
 - **Progress Tracking** - Real-time inline progress with detailed sync results
@@ -54,7 +54,7 @@ Built with Bubble Tea and following The Elm Architecture, repo-sync offers both 
 
 [`cmd/`](cmd/) - CLI command definitions and entry points
 
-[`internal/config/`](internal/config/) - Configuration management with persistent storage to `~/.config/repo-sync/config.json`
+[`internal/config/`](internal/config/) - Configuration management with persistent storage to `~/.config/reposync/config.json`
 
 [`internal/github/`](internal/github/) - GitHub API client implementation using [go-gh](https://github.com/cli/go-gh)
 
@@ -71,7 +71,7 @@ Built with Bubble Tea and following The Elm Architecture, repo-sync offers both 
 | Component                      | Responsibility                                                                                           |
 | ------------------------------ | :------------------------------------------------------------------------------------------------------- |
 | **CLI Commands**               | Root command with TUI launcher, GitHub subcommand (interactive/batch), Local subcommand (interactive/batch) |
-| **Configuration Management**   | Environment variable handling, persistent storage (`~/.config/repo-sync/config.json`), settings UI      |
+| **Configuration Management**   | Environment variable handling, persistent storage (`~/.config/reposync/config.json`), settings UI      |
 | **GitHub Integration**         | API client using go-gh, repository listing, organization management, authentication via GitHub CLI      |
 | **Local Scanner**              | Filesystem scanning for Git repositories, directory traversal, repository metadata extraction           |
 | **TUI Framework**              | Bubble Tea model/view architecture, tab navigation, repository list view, multi-select functionality    |
@@ -159,7 +159,7 @@ reposync/
 ├── internal/
 │   ├── config/
 │   │   ├── config.go     # Configuration management and environment variables
-│   │   └── store.go      # Persistent config storage (~/.config/repo-sync/config.json)
+│   │   └── store.go      # Persistent config storage (~/.config/reposync/config.json)
 │   ├── github/
 │   │   └── client.go     # GitHub API client (via go-gh)
 │   ├── local/
@@ -186,16 +186,16 @@ reposync/
 # 🚀 **Installation**
 
 > [!CAUTION]
-> This tool will clone or copy Git repositories to your specified target directory. Ensure you review the configuration and understand the sync operations before executing them. While repo-sync includes conflict detection, you should backup important data before bulk synchronization operations.
+> This tool will clone or copy Git repositories to your specified target directory. Ensure you review the configuration and understand the sync operations before executing them. While reposync includes conflict detection, you should backup important data before bulk synchronization operations.
 
 > [!WARNING]
-> You **must** have the GitHub CLI (`gh`) installed and authenticated to use GitHub synchronization features. Run `gh auth login` before using `repo-sync github` commands.
+> You **must** have the GitHub CLI (`gh`) installed and authenticated to use GitHub synchronization features. Run `gh auth login` before using `reposync github` commands.
 
 <br/>
 
 ## 1. **Prerequisites**
 
-Before installing repo-sync, ensure you have the following dependencies:
+Before installing reposync, ensure you have the following dependencies:
 
 - **Go 1.24 or later** - [Download](https://go.dev/dl/)
 - **Git** - Version control system
@@ -218,7 +218,7 @@ Before installing repo-sync, ensure you have the following dependencies:
 go install github.com/MoshPitCodes/reposync@latest
 ```
 
-This will install the `repo-sync` binary to your `$GOPATH/bin` directory.
+This will install the `reposync` binary to your `$GOPATH/bin` directory.
 
 ### Build from Source
 
@@ -228,7 +228,7 @@ git clone https://github.com/MoshPitCodes/reposync.git
 cd reposync
 
 # Build the binary
-go build -o repo-sync
+go build -o reposync
 
 # Install globally (optional)
 go install
@@ -238,12 +238,12 @@ go install
 
 ```bash
 # Build with version information embedded
-go build -ldflags "-X main.version=1.0.0" -o repo-sync
+go build -ldflags "-X main.version=1.0.0" -o reposync
 
 # Cross-compile for different platforms
-GOOS=linux GOARCH=amd64 go build -o repo-sync-linux-amd64
-GOOS=darwin GOARCH=amd64 go build -o repo-sync-darwin-amd64
-GOOS=windows GOARCH=amd64 go build -o repo-sync-windows-amd64.exe
+GOOS=linux GOARCH=amd64 go build -o reposync-linux-amd64
+GOOS=darwin GOARCH=amd64 go build -o reposync-darwin-amd64
+GOOS=windows GOARCH=amd64 go build -o reposync-windows-amd64.exe
 ```
 
 <br/>
@@ -251,17 +251,17 @@ GOOS=windows GOARCH=amd64 go build -o repo-sync-windows-amd64.exe
 ## 3. **Configuration**
 
 > [!TIP]
-> You can configure repo-sync using environment variables, or interactively by pressing `c` in the TUI to open the settings panel.
+> You can configure reposync using environment variables, or interactively by pressing `c` in the TUI to open the settings panel.
 
 ### Environment Variables
 
-Configure `repo-sync` using the following environment variables:
+Configure `reposync` using the following environment variables:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `REPO_SYNC_TARGET_DIR` | Target directory for cloning/copying repositories | `~/repos` |
-| `REPO_SYNC_GITHUB_OWNER` | Default GitHub owner/organization | Current user |
-| `REPO_SYNC_SOURCE_DIRS` | Colon-separated list of directories to scan for local repos | None |
+| `REPOSYNC_TARGET_DIR` | Target directory for cloning/copying repositories | `~/repos` |
+| `REPOSYNC_GITHUB_OWNER` | Default GitHub owner/organization | Current user |
+| `REPOSYNC_SOURCE_DIRS` | Colon-separated list of directories to scan for local repos | None |
 
 ### Example Configuration
 
@@ -269,24 +269,23 @@ Add to your `~/.bashrc`, `~/.zshrc`, or equivalent:
 
 ```bash
 # Target directory for synchronized repositories
-export REPO_SYNC_TARGET_DIR="$HOME/projects"
+export REPOSYNC_TARGET_DIR="$HOME/projects"
 
 # Default GitHub owner/organization
-export REPO_SYNC_GITHUB_OWNER="MoshPitCodes"
+export REPOSYNC_GITHUB_OWNER="MoshPitCodes"
 
 # Directories to scan for local repositories (colon-separated)
-export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/work:$HOME/personal"
+export REPOSYNC_SOURCE_DIRS="$HOME/dev:$HOME/work:$HOME/personal"
 ```
 
 ### Persistent Configuration
 
-Settings are persisted to `~/.config/repo-sync/config.json` and include:
+Settings are persisted to `~/.config/reposync/config.json` and include:
 
 - Target directory for synchronized repositories
 - Source directories for local repository scanning
 - Default GitHub owner
 - Recent owners list (for quick switching)
-- UI preferences (compact mode, etc.)
 
 <br/>
 
@@ -299,7 +298,7 @@ Settings are persisted to `~/.config/repo-sync/config.json` and include:
 Launch the interactive TUI menu with tabbed interface:
 
 ```bash
-repo-sync
+reposync
 ```
 
 This launches a tabbed interface with three modes:
@@ -313,16 +312,16 @@ Sync repositories from GitHub interactively:
 
 ```bash
 # Launch GitHub mode (Personal tab by default)
-repo-sync github
+reposync github
 
 # Launch with specific owner/organization
-repo-sync github --owner MoshPitCodes
+reposync github --owner MoshPitCodes
 ```
 
 Batch mode to clone specific repositories:
 
 ```bash
-repo-sync github --owner MoshPitCodes --batch repo1 repo2 repo3
+reposync github --owner MoshPitCodes --batch repo1 repo2 repo3
 ```
 
 ### Local Mode
@@ -330,13 +329,13 @@ repo-sync github --owner MoshPitCodes --batch repo1 repo2 repo3
 Sync local repositories interactively:
 
 ```bash
-repo-sync local
+reposync local
 ```
 
 Batch mode to copy specific repositories:
 
 ```bash
-repo-sync local --batch /path/to/repo1 /path/to/repo2
+reposync local --batch /path/to/repo1 /path/to/repo2
 ```
 
 <br/>
@@ -344,12 +343,12 @@ repo-sync local --batch /path/to/repo1 /path/to/repo2
 ## Command Reference
 
 ```bash
-repo-sync                                         # Launch interactive TUI with tabs
-repo-sync github                                  # GitHub interactive mode (Personal tab)
-repo-sync github --owner <owner>                  # GitHub mode with specific owner
-repo-sync github --owner <owner> --batch <repos...>  # Batch clone repos
-repo-sync local                                   # Local interactive mode
-repo-sync local --batch <paths...>                # Batch copy repos
+reposync                                         # Launch interactive TUI with tabs
+reposync github                                  # GitHub interactive mode (Personal tab)
+reposync github --owner <owner>                  # GitHub mode with specific owner
+reposync github --owner <owner> --batch <repos...>  # Batch clone repos
+reposync local                                   # Local interactive mode
+reposync local --batch <paths...>                # Batch copy repos
 ```
 
 <br/>
@@ -407,7 +406,7 @@ repo-sync local --batch <paths...>                # Batch copy repos
 
 ```bash
 # Launch the TUI
-repo-sync
+reposync
 
 # In the TUI:
 # 1. Press '1' for Personal repos or '2' for Organizations
@@ -423,7 +422,7 @@ repo-sync
 
 ```bash
 # Clone multiple repositories from a specific owner
-repo-sync github --owner MoshPitCodes --batch \
+reposync github --owner MoshPitCodes --batch \
   reposync \
   moshpitcodes.template \
   moshpitcodes.nixos
@@ -433,10 +432,10 @@ repo-sync github --owner MoshPitCodes --batch \
 
 ```bash
 # Configure source directories (or set via Settings with 'c' in TUI)
-export REPO_SYNC_SOURCE_DIRS="$HOME/dev:$HOME/projects"
+export REPOSYNC_SOURCE_DIRS="$HOME/dev:$HOME/projects"
 
 # Launch the TUI
-repo-sync
+reposync
 
 # In the TUI:
 # 1. Press '3' to switch to Local tab
@@ -449,7 +448,7 @@ repo-sync
 
 ```bash
 # Copy specific local repositories to target directory
-repo-sync local --batch \
+reposync local --batch \
   /home/user/dev/project1 \
   /home/user/dev/project2 \
   /home/user/work/project3

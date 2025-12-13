@@ -7,7 +7,6 @@
 bin/
 
 # Built Go binaries
-repo-sync
 reposync
 
 # Test binary, built with `go test -c`
