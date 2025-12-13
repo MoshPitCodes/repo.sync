@@ -1,4 +1,4 @@
-# golangci-lint configuration for repo-sync
+# golangci-lint configuration for reposync
 # Compatible with golangci-lint v1.64.x
 
 run:

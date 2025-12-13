@@ -42,7 +42,7 @@ With --batch flag, clones specified repositories without interaction.`,
 func init() {
 	rootCmd.AddCommand(githubCmd)
 
-	githubCmd.Flags().StringVar(&githubOwner, "owner", "", "GitHub owner/organization (defaults to REPO_SYNC_GITHUB_OWNER env var)")
+	githubCmd.Flags().StringVar(&githubOwner, "owner", "", "GitHub owner/organization (defaults to REPOSYNC_GITHUB_OWNER env var)")
 	githubCmd.Flags().BoolVar(&batchMode, "batch", false, "Batch mode: clone specified repositories without interaction")
 }
 
@@ -55,7 +55,7 @@ func runGitHub(cmd *cobra.Command, args []string) error {
 	}
 
 	if owner == "" {
-		return fmt.Errorf("GitHub owner must be specified via --owner flag or REPO_SYNC_GITHUB_OWNER env var")
+		return fmt.Errorf("GitHub owner must be specified via --owner flag or REPOSYNC_GITHUB_OWNER env var")
 	}
 
 	// Batch mode: clone specified repos directly

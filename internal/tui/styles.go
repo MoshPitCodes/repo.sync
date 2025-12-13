@@ -296,7 +296,7 @@ const AppVersion = "v1.0.0"
 
 // RenderHeader renders the application header with title and version.
 func RenderHeader(width int) string {
-	title := headerTitleStyle.Render("🔄 Repo Sync")
+	title := headerTitleStyle.Render("🔄 RepoSync")
 	version := headerVersionStyle.Render(AppVersion)
 	spacer := lipgloss.NewStyle().Width(width - lipgloss.Width(title) - lipgloss.Width(version) - 4).Render("")
 

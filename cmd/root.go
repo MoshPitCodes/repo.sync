@@ -29,9 +29,9 @@ var (
 	cfg *config.Config
 
 	rootCmd = &cobra.Command{
-		Use:   "repo-sync",
+		Use:   "reposync",
 		Short: "Repository synchronization tool with interactive TUI",
-		Long: `repo-sync is a CLI tool for synchronizing repositories from GitHub or local sources.
+		Long: `reposync is a CLI tool for synchronizing repositories from GitHub or local sources.
 It provides an interactive terminal UI powered by Bubble Tea for easy repository management.`,
 		RunE: runInteractive,
 	}

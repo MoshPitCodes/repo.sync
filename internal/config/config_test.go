@@ -167,9 +167,9 @@ func TestLoad(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("loads from environment variables", func(t *testing.T) {
-		t.Setenv("REPO_SYNC_TARGET_DIR", "/tmp/test")
-		t.Setenv("REPO_SYNC_GITHUB_OWNER", "testowner")
-		t.Setenv("REPO_SYNC_SOURCE_DIRS", "/path1:/path2:/path3")
+		t.Setenv("REPOSYNC_TARGET_DIR", "/tmp/test")
+		t.Setenv("REPOSYNC_GITHUB_OWNER", "testowner")
+		t.Setenv("REPOSYNC_SOURCE_DIRS", "/path1:/path2:/path3")
 
 		cfg, loadErr := Load()
 		require.NoError(t, loadErr)
@@ -180,9 +180,9 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("empty values when env vars not set", func(t *testing.T) {
-		t.Setenv("REPO_SYNC_TARGET_DIR", "")
-		t.Setenv("REPO_SYNC_GITHUB_OWNER", "")
-		t.Setenv("REPO_SYNC_SOURCE_DIRS", "")
+		t.Setenv("REPOSYNC_TARGET_DIR", "")
+		t.Setenv("REPOSYNC_GITHUB_OWNER", "")
+		t.Setenv("REPOSYNC_SOURCE_DIRS", "")
 
 		cfg, loadErr := Load()
 		require.NoError(t, loadErr)
@@ -193,9 +193,9 @@ func TestLoad(t *testing.T) {
 	})
 
 	t.Run("expands tilde in source dirs from env", func(t *testing.T) {
-		t.Setenv("REPO_SYNC_TARGET_DIR", "")
-		t.Setenv("REPO_SYNC_GITHUB_OWNER", "")
-		t.Setenv("REPO_SYNC_SOURCE_DIRS", "~/Development:~/Projects:/absolute/path")
+		t.Setenv("REPOSYNC_TARGET_DIR", "")
+		t.Setenv("REPOSYNC_GITHUB_OWNER", "")
+		t.Setenv("REPOSYNC_SOURCE_DIRS", "~/Development:~/Projects:/absolute/path")
 
 		cfg, loadErr := Load()
 		require.NoError(t, loadErr)

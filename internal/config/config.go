@@ -36,15 +36,15 @@ type Config struct {
 func Load() (*Config, error) {
 	cfg := &Config{}
 
-	// REPO_SYNC_TARGET_DIR: Default target directory for cloning/copying
+	// REPOSYNC_TARGET_DIR: Default target directory for cloning/copying
 	// Only set from env if explicitly provided (leave empty otherwise)
-	cfg.TargetDir = os.Getenv("REPO_SYNC_TARGET_DIR")
+	cfg.TargetDir = os.Getenv("REPOSYNC_TARGET_DIR")
 
-	// REPO_SYNC_GITHUB_OWNER: Default GitHub owner/org
-	cfg.GitHubOwner = os.Getenv("REPO_SYNC_GITHUB_OWNER")
+	// REPOSYNC_GITHUB_OWNER: Default GitHub owner/org
+	cfg.GitHubOwner = os.Getenv("REPOSYNC_GITHUB_OWNER")
 
-	// REPO_SYNC_SOURCE_DIRS: Colon-separated list of source directories to scan
-	sourceDirsEnv := os.Getenv("REPO_SYNC_SOURCE_DIRS")
+	// REPOSYNC_SOURCE_DIRS: Colon-separated list of source directories to scan
+	sourceDirsEnv := os.Getenv("REPOSYNC_SOURCE_DIRS")
 	if sourceDirsEnv != "" {
 		dirs := strings.Split(sourceDirsEnv, ":")
 		cfg.SourceDirs = make([]string, len(dirs))

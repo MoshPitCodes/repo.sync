@@ -27,7 +27,6 @@ type PersistedConfig struct {
 	SourceDirs   []string `json:"source_dirs,omitempty"`
 	DefaultOwner string   `json:"default_owner,omitempty"`
 	RecentOwners []string `json:"recent_owners,omitempty"`
-	CompactMode  bool     `json:"compact_mode,omitempty"`
 }
 
 // ConfigStore handles persistent storage of configuration.
@@ -42,7 +41,7 @@ func NewConfigStore() (*ConfigStore, error) {
 		return nil, fmt.Errorf("failed to get user config directory: %w", err)
 	}
 
-	path := filepath.Join(configDir, "repo-sync", "config.json")
+	path := filepath.Join(configDir, "reposync", "config.json")
 
 	// Ensure config directory exists
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
